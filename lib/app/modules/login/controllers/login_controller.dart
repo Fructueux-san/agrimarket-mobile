@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/app/modules/home/views/home_view.dart';
 import 'package:mobile/app/modules/login/providers/login_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -40,8 +41,9 @@ class LoginController extends GetxController {
           colorText: Colors.red);
     } else {
       if (res.statusCode == 200) {
+        print(res.bodyString);
         Get.snackbar("Bienvenu ", "Connexion réussi !");
-        Get.offNamed("/home");
+        Get.offAll(HomeView());
         return true;
       } else if (res.statusCode! >= 400) {
         Get.snackbar('Echec Login', "",

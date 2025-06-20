@@ -66,6 +66,9 @@ flutter:
     - images/logo.png
     - images/logo_complet.png
     - images/consommons_mieux.png
+    - images/logo_complet_white.png
+    - images/logo_white.png
+    - images/image_carrefour.jpg
      # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

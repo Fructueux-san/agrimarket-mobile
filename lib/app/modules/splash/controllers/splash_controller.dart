@@ -1,5 +1,5 @@
 import 'package:get/get.dart';
-import 'package:mobile/app/modules/login/views/login_view.dart';
+import 'package:mobile/app/modules/crossroads/views/crossroads_view.dart';
 
 class SplashController extends GetxController {
   //TODO: Implement SplashController
@@ -18,7 +18,8 @@ class SplashController extends GetxController {
 
   Future navigateToHome() async {
     await Future.delayed(Duration(seconds: 2));
-    Get.to(() => LoginView());
+    Get.offAll(() => CrossroadsView());
+    //Get.to(() => LoginView());
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/app/modules/register_client/views/register_client_view.dart';
 
 import '../controllers/login_controller.dart';
 
@@ -145,7 +146,10 @@ class LoginView extends GetView<LoginController> {
                           ),
                         ),
                         TextButton(
-                            onPressed: () {}, child: Text("Créer mon compte"))
+                            onPressed: () {
+                              Get.to(() => RegisterClientView());
+                            },
+                            child: Text("Créer mon compte"))
                       ],
                     ),
                     Text("Agri Market +, tous droit reservé")
