@@ -11,11 +11,14 @@ class RegisterClientView extends GetView<RegisterClientController> {
   final _emailFieldController = TextEditingController();
   final _passwordFielController = TextEditingController();
   final _passwordRepeatController = TextEditingController();
+  final _phoneNumberFieldController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
 
   var _isPasswordObscured = true.obs;
   var _isPasswordRepeatObscured = true.obs;
+
+  final _registerController = RegisterClientController();
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +49,7 @@ class RegisterClientView extends GetView<RegisterClientController> {
                               fontSize: 30, fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          'Fournissez les informations pour continuer',
+                          'Cher client, fournissez les informations pour continuer',
                           style: TextStyle(color: Colors.grey, fontSize: 13),
                         )
                       ],
@@ -59,8 +62,13 @@ class RegisterClientView extends GetView<RegisterClientController> {
                               controller: _fullnameFieldController,
                               keyboardType: TextInputType.text,
                               decoration: InputDecoration(
-                                hintText: "Fullname",
+                                hintText: "Nom complet",
                               ),
+                              validator: (v) {
+                                return v == "" || v == null
+                                    ? "Votre nom complet est nécessaire"
+                                    : null;
+                              },
                             ),
                             SizedBox(
                               height: 10,
@@ -71,6 +79,26 @@ class RegisterClientView extends GetView<RegisterClientController> {
                               decoration: InputDecoration(
                                 hintText: "Email",
                               ),
+                              validator: (v) {
+                                return v == "" || v == null
+                                    ? "Renseigner votre adresse mail."
+                                    : null;
+                              },
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            TextFormField(
+                              controller: _phoneNumberFieldController,
+                              keyboardType: TextInputType.phone,
+                              decoration: InputDecoration(
+                                hintText: "Téléphone",
+                              ),
+                              validator: (v) {
+                                return v == "" || v == null
+                                    ? "Renseigner votre n° de tel."
+                                    : null;
+                              },
                             ),
                             SizedBox(
                               height: 10,
@@ -90,6 +118,11 @@ class RegisterClientView extends GetView<RegisterClientController> {
                                             : const Icon(Icons.visibility)),
                                     hintText: "password",
                                   ),
+                                  validator: (v) {
+                                    return v == "" || v == null
+                                        ? "Créer votre mot de passe."
+                                        : null;
+                                  },
                                 )),
                             SizedBox(
                               height: 10,
@@ -107,8 +140,13 @@ class RegisterClientView extends GetView<RegisterClientController> {
                                         icon: _isPasswordRepeatObscured.value
                                             ? const Icon(Icons.visibility_off)
                                             : const Icon(Icons.visibility)),
-                                    hintText: "password",
+                                    hintText: "Confirmer le password",
                                   ),
+                                  validator: (v) {
+                                    return v == "" || v == null
+                                        ? "Confirmer votre nouveau mot de passe"
+                                        : null;
+                                  },
                                 )),
                           ],
                         )),
@@ -131,7 +169,23 @@ class RegisterClientView extends GetView<RegisterClientController> {
                         ])),
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {}, // Envoyer la requête de login
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            var userData = {
+                              "fullname": _fullnameFieldController.text,
+                              "email": _emailFieldController.text,
+                              "password": _passwordFielController.text,
+                              "password_repeat": _passwordRepeatController.text,
+                              "telephone": _phoneNumberFieldController.text,
+                              "user_type": "CLIENT"
+                            };
+                            var registerResponse =
+                                await _registerController.register(userData);
+                            if (registerResponse == true) {
+                              Get.offAll(() => LoginView());
+                            }
+                          }
+                        }, // Envoyer la requête de login
                         style: ElevatedButton.styleFrom(
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0)),

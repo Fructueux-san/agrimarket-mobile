@@ -21,10 +21,7 @@ class LoginProvider extends GetConnect {
     var url =
         "${conf.server_scheme}://${conf.server}:${conf.server_port}/api/user/logout";
     print(url);
-    var res = delete(url, headers: {
-      "token": prefs.getString('token') ?? ""
-    });
+    var res = delete(url, headers: {"token": prefs.getString('token') ?? ""});
     return res;
-
   }
 }
