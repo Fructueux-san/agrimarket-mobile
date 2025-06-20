@@ -28,10 +28,10 @@ class LoginController extends GetxController {
 
   void saveUserData(Map userData) async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setString("fullname", userData['fullName']);
+    prefs.setString("fullname", userData['fullname']);
     prefs.setString("email", userData['email']);
     prefs.setString("token", userData['token']);
-    prefs.setString("user_type", userData['typestan']);
+    prefs.setString("user_type", userData['type']);
   }
 
   Future<bool> login(Map<String, String> userData) async {
@@ -43,6 +43,7 @@ class LoginController extends GetxController {
       if (res.statusCode == 200) {
         print(res.bodyString);
         Get.snackbar("Bienvenu ", "Connexion réussi !");
+        this.saveUserData(res.body);
         Get.offAll(HomeView());
         return true;
       } else if (res.statusCode! >= 400) {
