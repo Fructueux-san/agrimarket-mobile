@@ -11,9 +11,10 @@ class LoginView extends GetView<LoginController> {
   final _emailNode = FocusNode();
   final _passwordNode = FocusNode();
 
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
-  var _isObscured = Rx<bool>(true);
+  final _isObscured = Rx<bool>(true);
+  final _loginController = LoginController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +28,7 @@ class LoginView extends GetView<LoginController> {
             ),
             child: IntrinsicHeight(
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -52,63 +53,100 @@ class LoginView extends GetView<LoginController> {
                           height: 20,
                         ),
                         Form(
+                            key: _formKey,
                             child: Column(
-                          children: [
-                            TextFormField(
-                              controller: _emailFieldController,
-                              focusNode: _emailNode,
-                              keyboardType: TextInputType.text,
-                              decoration: InputDecoration(
-                                hintText: "email",
-                              ),
-                            ),
-                            SizedBox(
-                              height: 30,
-                            ),
-                            Obx(() => TextFormField(
-                                  controller: _passwordFieldController,
-                                  focusNode: _passwordNode,
-                                  keyboardType: TextInputType.text,
-                                  obscureText: _isObscured.value,
-                                  decoration: InputDecoration(
-                                      hintText: "password",
-                                      suffixIcon: IconButton(
-                                          onPressed: () {
-                                            _isObscured.value =
-                                                !_isObscured.value;
-                                          },
-                                          icon: _isObscured.value
-                                              ? const Icon(Icons.visibility_off)
-                                              : const Icon(Icons.visibility))),
-                                )),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                Text(
-                                  "Mot de passe oublié ? Cliquez ici.",
-                                  style: TextStyle(color: Colors.grey),
-                                )
+                                TextFormField(
+                                  controller: _emailFieldController,
+                                  focusNode: _emailNode,
+                                  keyboardType: TextInputType.emailAddress,
+                                  decoration: InputDecoration(
+                                    hintText: "email",
+                                  ),
+                                  validator: (v) {
+                                    if (v == null || v == "") {
+                                      _emailNode.requestFocus();
+                                      return "L'email est requis";
+                                    } else {
+                                      return null;
+                                    }
+                                  },
+                                ),
+                                SizedBox(
+                                  height: 30,
+                                ),
+                                Obx(() => TextFormField(
+                                      controller: _passwordFieldController,
+                                      focusNode: _passwordNode,
+                                      keyboardType: TextInputType.text,
+                                      obscureText: _isObscured.value,
+                                      decoration: InputDecoration(
+                                          hintText: "password",
+                                          suffixIcon: IconButton(
+                                              onPressed: () {
+                                                _isObscured.value =
+                                                    !_isObscured.value;
+                                              },
+                                              icon: _isObscured.value
+                                                  ? const Icon(
+                                                      Icons.visibility_off)
+                                                  : const Icon(
+                                                      Icons.visibility))),
+                                      validator: (v) {
+                                        if (v == null || v == "") {
+                                          _passwordNode.requestFocus();
+                                          return "Entrez le mot de passe";
+                                        } else {
+                                          return null;
+                                        }
+                                      },
+                                    )),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      "Mot de passe oublié ? Cliquez ici.",
+                                      style: TextStyle(color: Colors.grey),
+                                    )
+                                  ],
+                                ),
                               ],
-                            ),
-                          ],
-                        ))
+                            ))
                       ],
                     ),
-                    ElevatedButton(
-                      onPressed: () {}, // Envoyer la requête de login
-                      style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0)),
-                          backgroundColor: Color.fromRGBO(83, 177, 117, 1),
-                          padding: EdgeInsets.only(
-                              left: 30, right: 30, top: 15, bottom: 15)),
-                      child: Text(
-                        "Se connecter",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                      ),
+                    Column(
+                      children: [
+                        ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              //On lance la requête de login
+                              var userData = {
+                                "email": _emailFieldController.text,
+                                "password": _passwordFieldController.text
+                              };
+                              var res = await _loginController.login(userData);
+                              if (!res) {
+                                _emailNode.requestFocus();
+                              }
+                            }
+                          }, // Envoyer la requête de login
+                          style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10.0)),
+                              backgroundColor: Color.fromRGBO(83, 177, 117, 1),
+                              padding: EdgeInsets.only(
+                                  left: 30, right: 30, top: 15, bottom: 15)),
+                          child: Text(
+                            "Se connecter",
+                            style: TextStyle(fontSize: 20, color: Colors.white),
+                          ),
+                        ),
+                        TextButton(
+                            onPressed: () {}, child: Text("Créer mon compte"))
+                      ],
                     ),
                     Text("Agri Market +, tous droit reservé")
                   ],

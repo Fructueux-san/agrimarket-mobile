@@ -22,7 +22,7 @@ class HomeView extends GetView<HomeController> {
             ),
             ElevatedButton(
                 onPressed: () {
-                  Get.to(LoginView());
+                  Get.to(() => LoginView());
                 },
                 child: const Text("Login"))
           ],
