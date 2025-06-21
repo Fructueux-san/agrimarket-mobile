@@ -56,7 +56,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.ACCOUNT,
-      page: () => const AccountView(),
+      page: () => AccountView(),
       binding: AccountBinding(),
     ),
     GetPage(
