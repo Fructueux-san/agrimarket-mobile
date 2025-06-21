@@ -71,6 +71,9 @@ flutter:
     - images/image_carrefour.jpg
     - images/stick.png
     - images/avatar.png
+    - images/pomme.png
+    - images/ginger.png
+    - images/rice.png
      # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
