@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile/app/modules/home/views/home_view.dart';
 import 'package:mobile/app/modules/login/providers/login_provider.dart';
+import 'package:mobile/app/services/storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginController extends GetxController {
@@ -9,6 +10,7 @@ class LoginController extends GetxController {
 
   final count = 0.obs;
   var loginProvider = LoginProvider();
+  final storage = Get.find<StorageService>();
   @override
   void onInit() {
     super.onInit();
@@ -34,6 +36,25 @@ class LoginController extends GetxController {
     prefs.setString("token", userData['token']);
     prefs.setString('exp', userData['exp'].toString());
     prefs.setString("user_type", userData['type']);
+  }
+
+  Future<bool> logout() async {
+    //final token = storage.getKeyValue("token");
+    var res = await loginProvider.logoutAPICall();
+    print(res.body);
+    print(res.statusCode);
+    if (res.statusCode == null) {
+      Get.snackbar("Echec", "vérifier votre connexion internet.");
+      return false;
+    } else {
+      if (res.statusCode == 200) {
+        Get.snackbar("Logout", "${res.body['message'] ?? 'Okay'}");
+        return true;
+      } else {
+        Get.snackbar("Echec", "Une erreur s'est porduite.");
+        return false;
+      }
+    }
   }
 
   Future<bool> login(Map<String, String> userData) async {

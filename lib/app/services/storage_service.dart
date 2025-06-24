@@ -22,5 +22,5 @@ class StorageService extends GetxService {
 
   void removeToken() => _prefs.remove("token");
 
-  void clearPrefs() => _prefs.clear();
+  void clearPrefs() async => await _prefs.clear();
 }

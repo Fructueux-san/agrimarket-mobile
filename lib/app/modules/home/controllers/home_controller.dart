@@ -32,7 +32,7 @@ class HomeController extends GetxController {
     } else {
       storage.setKeyStringValue('theme', 'dark');
       mainTheme.value = 'dark';
-      Get.changeTheme(ThemeData.dark());
+      Get.changeTheme(ThemeData.dark(useMaterial3: true));
     }
   }
 }

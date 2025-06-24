@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/app/modules/account/views/account_view.dart';
+import 'package:mobile/app/modules/crossroads/views/crossroads_view.dart';
 import 'package:mobile/app/modules/home/controllers/home_controller.dart';
+import 'package:mobile/app/modules/login/controllers/login_controller.dart';
 import 'package:mobile/app/services/storage_service.dart';
 
 class DrawerView extends GetView {
   DrawerView({super.key});
   final _homeController = HomeController();
+  final _loginController = LoginController();
   //final storage = Get.put(StorageService());
   final storage = Get.find<StorageService>();
   @override
@@ -47,16 +51,53 @@ class DrawerView extends GetView {
                         "${storage.getKeyValue('fullname')}",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      Text(
-                        "@${storage.getKeyValue('email')}",
-                        style: TextStyle(fontStyle: FontStyle.italic),
-                      )
                     ],
                   )
                 ],
-              )
+              ),
             ],
-          ))
+          )),
+          ListTile(
+            leading: Icon(Icons.person_outline_rounded),
+            title: Text("Mon compte"),
+            onTap: () => {Get.to(AccountView())},
+          ),
+          ListTile(
+            leading: Icon(Icons.category),
+            title: Text("Catégories"),
+          ),
+          ListTile(
+            leading: Icon(Icons.settings_outlined),
+            title: Text("Paramètres"),
+            onTap: () {
+              //Get.to(SettingsView());
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.share),
+            title: Text(
+              "Partager l'app",
+            ),
+            trailing:
+                IconButton(onPressed: () {}, icon: Icon(Icons.qr_code_rounded)),
+          ),
+          ListTile(
+            leading: Icon(Icons.logout),
+            title: Text(
+              "Deconnexion",
+              style: TextStyle(color: Colors.red),
+            ),
+            onTap: () async {
+              var res = await _loginController.logout();
+              if (res == true) {
+                //Get.offAndToNamed("/login");
+                storage.clearPrefs();
+                Get.offAll(() => CrossroadsView());
+              } else {
+                Get.snackbar("Erreur", "Quelque chose n'a pas fonctionné.");
+              }
+            },
+          )
         ],
       ),
     );
