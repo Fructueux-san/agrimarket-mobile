@@ -20,6 +20,7 @@ class HomeView extends GetView<HomeController> {
   ];
   final BottomnavController bottomnavController =
       Get.put(BottomnavController());
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

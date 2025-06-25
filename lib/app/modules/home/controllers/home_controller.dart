@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/app/modules/explore/controllers/explore_controller.dart';
 import 'package:mobile/app/services/storage_service.dart';
 
 class HomeController extends GetxController {
@@ -7,6 +8,8 @@ class HomeController extends GetxController {
 
   final count = 0.obs;
   final storage = Get.find<StorageService>();
+  final exploreController = Get.put(ExploreController(), permanent: true);
+
   // final storage = Get.put(StorageService());
   var mainTheme = 'light'.obs;
 

@@ -14,6 +14,7 @@ void main() async {
       //initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       home: SplashView(),
+      theme: ThemeData(useMaterial3: true),
     ),
   );
 }
