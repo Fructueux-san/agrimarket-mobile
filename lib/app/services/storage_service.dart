@@ -23,4 +23,22 @@ class StorageService extends GetxService {
   void removeToken() => _prefs.remove("token");
 
   void clearPrefs() async => await _prefs.clear();
+
+  void clearPrefsForLogout() async {
+    await _prefs.remove("userId");
+    await _prefs.remove("fullname");
+    await _prefs.remove("email");
+    await _prefs.remove("token");
+    await _prefs.remove('exp');
+    await _prefs.remove("user_type");
+  }
+
+  void showUserInformation() {
+    print(_prefs.get("userId"));
+    print(_prefs.get("fullname"));
+    print(_prefs.get("email"));
+    print(_prefs.get("exp"));
+    print(_prefs.get("user_type"));
+    print(_prefs.get("token"));
+  }
 }

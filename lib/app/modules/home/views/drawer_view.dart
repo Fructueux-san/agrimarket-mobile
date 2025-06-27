@@ -89,13 +89,14 @@ class DrawerView extends GetView {
             ),
             onTap: () async {
               var res = await _loginController.logout();
+              storage.clearPrefsForLogout();
               if (res == true) {
                 //Get.offAndToNamed("/login");
-                storage.clearPrefs();
-                Get.offAll(() => CrossroadsView());
+                Get.snackbar("Deconnexion", "A bientôt !");
               } else {
                 Get.snackbar("Erreur", "Quelque chose n'a pas fonctionné.");
               }
+              Get.offAll(() => CrossroadsView());
             },
           )
         ],

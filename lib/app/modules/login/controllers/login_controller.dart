@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile/app/modules/home/views/home_view.dart';
 import 'package:mobile/app/modules/login/providers/login_provider.dart';
+import 'package:mobile/app/modules/onboarding/controllers/onboarding_controller.dart';
+import 'package:mobile/app/modules/onboarding/views/onboarding_view.dart';
 import 'package:mobile/app/services/storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -30,7 +32,7 @@ class LoginController extends GetxController {
 
   void saveUserData(Map userData) async {
     var prefs = await SharedPreferences.getInstance();
-    prefs.setString("userId", userData['userId']);
+    prefs.setString("userId", userData['_id']);
     prefs.setString("fullname", userData['fullname']);
     prefs.setString("email", userData['email']);
     prefs.setString("token", userData['token']);
@@ -66,8 +68,16 @@ class LoginController extends GetxController {
       if (res.statusCode == 200) {
         print(res.body);
         Get.snackbar("Bienvenu ", "Connexion réussi !");
-        this.saveUserData(res.body);
-        Get.offAll(HomeView());
+        saveUserData(res.body);
+
+        // Check if it is the first connection
+        if (res.body['firstTime'] == true) {
+          Get.put(OnboardingController());
+          Get.off(OnboardingView(), arguments: res.body);
+        } else {
+          Get.offAll(HomeView());
+        }
+
         return true;
       } else if (res.statusCode! >= 400) {
         Get.snackbar('Echec Login', "",

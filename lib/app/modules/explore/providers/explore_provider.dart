@@ -14,7 +14,7 @@ class ExploreProvider extends GetConnect {
         "${conf.server_scheme}://${conf.server}:${conf.server_port}/api/category/all";
     var res = get(url, headers: {
       'accept': "applications:json",
-      'token': await _storage.getKeyValue('token')
+      'token': await _storage.getKeyValue('token') ?? ""
     });
     return res;
   }

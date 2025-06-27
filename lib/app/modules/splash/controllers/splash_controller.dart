@@ -24,6 +24,7 @@ class SplashController extends GetxController {
     await Future.delayed(Duration(seconds: 2));
     try {
       final token = storage.getToken();
+      storage.showUserInformation();
       final int exp = int.parse(storage.getKeyValue('exp'));
       if (token != null && exp < DateTime.now().millisecondsSinceEpoch) {
         Get.snackbar(
