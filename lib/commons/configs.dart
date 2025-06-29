@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-const server = "196.192.27.108";
+const server = "10.0.2.2";
 const server_port = "5000";
 const server_scheme = 'http';
 

@@ -13,7 +13,17 @@ class ExploreProvider extends GetConnect {
     var url =
         "${conf.server_scheme}://${conf.server}:${conf.server_port}/api/category/all";
     var res = get(url, headers: {
-      'accept': "applications:json",
+      'accept': "applications/json",
+      'token': await _storage.getKeyValue('token') ?? ""
+    });
+    return res;
+  }
+
+  Future<Response> explorationDataFetching({elementPerCats = 3}) async {
+    var url =
+        "${conf.server_scheme}://${conf.server}:${conf.server_port}/api/user/explore-page?limit=$elementPerCats";
+    var res = get(url, headers: {
+      'accept': "applications/json",
       'token': await _storage.getKeyValue('token') ?? ""
     });
     return res;

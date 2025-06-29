@@ -49,11 +49,11 @@ class HomeView extends GetView<HomeController> {
               items: const [
                 BottomNavigationBarItem(
                     activeIcon: Icon(
-                      Icons.manage_search,
+                      Icons.home,
                       color: Color.fromRGBO(83, 177, 117, 1),
                     ),
                     icon: Icon(
-                      Icons.manage_search,
+                      Icons.home_outlined,
                       color: Colors.black,
                     ),
                     label: "Explore"),

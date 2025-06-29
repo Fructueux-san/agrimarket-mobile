@@ -1,10 +1,9 @@
-import 'dart:math';
-
 import 'package:buttons_tabbar/buttons_tabbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:mobile/app/modules/explore/views/categories_view.dart';
 import 'package:mobile/app/modules/product/views/product_view.dart';
 import 'package:mobile/commons/configs.dart';
 
@@ -65,221 +64,201 @@ class ExploreView extends GetView<ExploreController> {
               ]),
         ),
         body: TabBarView(children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Offres exclusives",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  height: 220,
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(color: Colors.grey[100]),
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 8,
-                      itemBuilder: (context, count) {
-                        return InkWell(
-                          onTap: () {
-                            print("tap on it");
-                            // On va sur la page de présentation du produit
-                            Get.to(() => ProductView());
-                          },
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 10),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(color: Color(0xD0CECEFF)),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(10))),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Center(
-                                    child: Image.asset(
-                                      "images/pomme.png",
-                                      scale: 3,
-                                    ),
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "Pomme rouge",
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                      Text(
-                                        "BenBio labs",
-                                        style: TextStyle(
-                                            color: Colors.grey, fontSize: 10),
-                                      ),
-                                    ],
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Text("XOF 1200, kg"),
-                                      SizedBox(
-                                        width: 10,
-                                      ),
-                                      IconButton(
-                                          style: IconButton.styleFrom(
-                                              backgroundColor: Color.fromRGBO(
-                                                  83, 177, 117, 1)),
-                                          onPressed: () {},
-                                          icon: Icon(
-                                            Icons.add,
-                                            color: Colors.white,
-                                            weight: 20,
-                                          ))
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
+          Obx(() => LiquidPullToRefresh(
+                backgroundColor: Colors.white54,
+                color: Colors.grey[100],
+                onRefresh: () async {
+                  await _exploreController.loadDataForHomePage();
+                },
+                child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    itemCount: _exploreController.categoriesWithProducts.length,
+                    itemBuilder: (context, index_cats) {
+                      return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            height: 20,
                           ),
-                        );
-                      }),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Ceci pourrait vous intéresser",
-                    style: TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Container(
-                  height: 220,
-                  width: double.infinity,
-                  padding: EdgeInsets.symmetric(vertical: 20),
-                  decoration: BoxDecoration(color: Colors.grey[100]),
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: 8,
-                      itemBuilder: (context, count) {
-                        return Container(
-                          margin: EdgeInsets.symmetric(horizontal: 10),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(color: Color(0xD0CECEFF)),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Center(
-                                  child: Image.asset(
-                                    "images/ginger.png",
-                                    scale: 3,
+                                RichText(
+                                  textAlign: TextAlign.start,
+                                  text: TextSpan(
+                                    text:
+                                        "${_exploreController.categoriesWithProducts[index_cats]['name']} ",
+                                    children: [
+                                      TextSpan(
+                                          text: "(-20%)",
+                                          style: TextStyle(
+                                              color: MAIN_APP_COLOR,
+                                              fontSize: 16))
+                                    ],
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 18,
+                                        color: Colors.black),
                                   ),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Pomme rouge",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(
-                                      "BenBio labs",
-                                      style: TextStyle(
-                                          color: Colors.grey, fontSize: 10),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Row(
-                                  children: [
-                                    Text("XOF 1200, kg"),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    IconButton(
-                                        style: IconButton.styleFrom(
-                                            backgroundColor: Color.fromRGBO(
-                                                83, 177, 117, 1)),
-                                        onPressed: () {},
-                                        icon: Icon(
-                                          Icons.add,
-                                          color: Colors.white,
-                                          weight: 20,
-                                        ))
-                                  ],
+                                Text(
+                                  style: TextStyle(),
+                                  textAlign: TextAlign.start,
+                                  "${_exploreController.categoriesWithProducts[index_cats]['description']}",
                                 )
                               ],
                             ),
                           ),
-                        );
-                      }),
-                )
-              ],
-            ),
-          ),
-          LiquidPullToRefresh(
-              onRefresh: () async {
-                await _exploreController.loadCategories();
-              },
-              color: Colors.grey,
-              height: 100,
-              backgroundColor: Colors.white,
-              animSpeedFactor: 2,
-              showChildOpacityTransition: false,
-              child: Obx(
-                () => MasonryGridView.builder(
-                    itemCount: _exploreController.categories.length,
-                    gridDelegate:
-                        const SliverSimpleGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2),
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                              color: CATEGORIES_COLORS_LIST[Random()
-                                  .nextInt(CATEGORIES_COLORS_LIST.length)],
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(10))),
-                          height: Random().nextInt(100) + 70,
-                          child: Center(
-                              child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20),
-                                _exploreController.categories[index]['name'] +
-                                    _exploreController.categories[index]
-                                        ['icon']),
-                          )),
-                        ),
+                          SizedBox(
+                            height: context.width * 0.50 + 90,
+                            child: ListView.separated(
+                                scrollDirection: Axis.horizontal,
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 8),
+                                itemBuilder: (context, index) {
+                                  var productImage = Image.network(
+                                    fit: BoxFit.cover,
+                                    "$server_scheme://$host/api/product/media/${_exploreController.categoriesWithProducts[index_cats]['products'][index]['_id']}",
+                                    width: context.width * 0.35,
+                                    height: context.height * 0.25,
+                                  );
+                                  return SizedBox(
+                                    width: context.width * 0.35,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Stack(
+                                          alignment: Alignment.topRight,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Get.to(ProductView(),
+                                                    arguments: {
+                                                      "productInfo":
+                                                          _exploreController
+                                                                      .categoriesWithProducts[
+                                                                  index_cats][
+                                                              'products'][index],
+                                                      "productImage":
+                                                          productImage
+                                                    });
+                                              },
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(15),
+                                                child: productImage,
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: InkWell(
+                                                onTap: () {},
+                                                child: Container(
+                                                    width: 35,
+                                                    height: 35,
+                                                    alignment: Alignment.center,
+                                                    decoration: BoxDecoration(
+                                                        color: Colors.white,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(20)),
+                                                    child: Icon(
+                                                      Icons.favorite_border,
+                                                      color: Colors.red,
+                                                    )),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 6,
+                                        ),
+                                        IgnorePointer(
+                                          ignoring: true,
+                                          child: RatingBar.builder(
+                                              initialRating: 3,
+                                              minRating: 1,
+                                              direction: Axis.horizontal,
+                                              allowHalfRating: true,
+                                              itemCount: 5,
+                                              itemSize: 16,
+                                              itemPadding: EdgeInsets.symmetric(
+                                                  horizontal: 2.0),
+                                              itemBuilder: (context, _) => Icon(
+                                                    Icons.star,
+                                                    color: Colors.amber,
+                                                  ),
+                                              onRatingUpdate: (rating) {
+                                                print(rating);
+                                              }),
+                                        ),
+                                        Text(
+                                          "${_exploreController.categoriesWithProducts[index_cats]['products'][index]["name"]}",
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          "xof ${_exploreController.categoriesWithProducts[index_cats]['products'][index]['price']} par Kg",
+                                          maxLines: 1,
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                      ],
+                                    ),
+                                  );
+                                },
+                                separatorBuilder: (context, index) => SizedBox(
+                                      width: 20,
+                                    ),
+                                itemCount: _exploreController
+                                    .categoriesWithProducts[index_cats]
+                                        ['products']
+                                    .length),
+                          ),
+                        ],
                       );
                     }),
               )),
+          CategoriesView(),
           Center(
             child: Text("Hahahaha"),
           )
         ]),
+      ),
+    );
+  }
+}
+
+class ProductCard extends StatefulWidget {
+  const ProductCard({super.key});
+
+  @override
+  State<ProductCard> createState() => _ProductCardState();
+}
+
+class _ProductCardState extends State<ProductCard> {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: context.width * 0.35,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            "images/pomme.png",
+            width: context.width * 0.35,
+          ),
+        ],
       ),
     );
   }

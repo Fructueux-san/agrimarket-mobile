@@ -10,10 +10,13 @@ class ExploreController extends GetxController {
   final _exploreProvider = ExploreProvider();
   final _storage = Get.find<StorageService>();
   List categories = [].obs;
+
+  List categoriesWithProducts = [].obs;
   @override
   void onInit() {
     super.onInit();
     loadCategories();
+    loadDataForHomePage();
   }
 
   @override
@@ -28,6 +31,20 @@ class ExploreController extends GetxController {
   }
 
   void increment() => count.value++;
+
+  Future loadDataForHomePage() async {
+    var res = await _exploreProvider.explorationDataFetching(elementPerCats: 5);
+    if (res.statusCode == null) {
+      Get.snackbar('Erreur', "Vérifier votre connexion internet.");
+    } else {
+      if (res.statusCode == 200) {
+        print(res.body);
+        categoriesWithProducts.assignAll(res.body);
+      } else {
+        Get.snackbar("Error", "Impossible de récupérer le feed");
+      }
+    }
+  }
 
   Future<List> loadCategories() async {
     // On récupère la liste des catégories.

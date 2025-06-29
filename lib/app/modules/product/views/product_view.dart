@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/commons/configs.dart';
 
 import '../controllers/product_controller.dart';
 
 class ProductView extends GetView<ProductController> {
   ProductView({super.key});
+
+  var args = Get.arguments;
 
   final List<Item> _data = [
     Item(
@@ -33,7 +36,16 @@ class ProductView extends GetView<ProductController> {
                   borderRadius: BorderRadius.only(
                       bottomLeft: Radius.circular(20),
                       bottomRight: Radius.circular(20))),
-              child: Center(child: Image.asset("images/pomme.png"))),
+              child: Center(
+                  child: Container(
+                width: double.infinity,
+                child: Image.network(
+                  fit: BoxFit.fitHeight,
+                  "$server_scheme://$host/api/product/media/${Get.arguments['productInfo']['_id']}",
+                  width: context.width * 0.35,
+                  height: context.height * 0.25,
+                ),
+              ))),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -121,7 +133,9 @@ class ProductView extends GetView<ProductController> {
                   _data[index].isExpanded = !isExpanded;
                 },
               )),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
