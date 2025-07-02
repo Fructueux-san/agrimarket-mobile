@@ -28,26 +28,52 @@ class CategoriesView extends GetView {
                   const SliverSimpleGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
               itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(5.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: CATEGORIES_COLORS_LIST[
-                            Random().nextInt(CATEGORIES_COLORS_LIST.length)],
-                        borderRadius: BorderRadius.all(Radius.circular(10))),
-                    height: Random().nextInt(100) + 70,
-                    child: Center(
-                        child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        _exploreController.categories[index]['name'] +
-                            _exploreController.categories[index]['icon'],
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                    )),
+                return InkWell(
+                  onTap: () {
+                    /*Get.put(
+                        CategoryProductsController(
+                            _exploreController.categories[index]['_id']),
+                        permanent: false);*/
+
+                    Get.toNamed("/category-products",
+                        parameters: {
+                          'category': _exploreController.categories[index]
+                              ['_id']
+                        },
+                        arguments: _exploreController.categories[index]);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 10),
+                      decoration: BoxDecoration(
+                          color: CATEGORIES_COLORS_LIST[
+                              Random().nextInt(CATEGORIES_COLORS_LIST.length)],
+                          borderRadius: BorderRadius.all(Radius.circular(10))),
+                      //height: Random().nextInt(100) + 70,
+                      child: Center(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: _exploreController.categories[index]['icon'] !=
+                                null
+                            ? Text(
+                                _exploreController.categories[index]['name'] +
+                                    _exploreController.categories[index]
+                                        ['icon'],
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              )
+                            : Text(
+                                _exploreController.categories[index]['name'],
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20),
+                              ),
+                      )),
+                    ),
                   ),
                 );
               }),

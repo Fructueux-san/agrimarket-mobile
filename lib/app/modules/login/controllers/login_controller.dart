@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/app/modules/explore/controllers/explore_controller.dart';
 import 'package:mobile/app/modules/home/views/home_view.dart';
 import 'package:mobile/app/modules/login/providers/login_provider.dart';
 import 'package:mobile/app/modules/onboarding/controllers/onboarding_controller.dart';
@@ -75,6 +76,7 @@ class LoginController extends GetxController {
           Get.put(OnboardingController());
           Get.off(OnboardingView(), arguments: res.body);
         } else {
+          Get.put(ExploreController());
           Get.offAll(HomeView());
         }
 

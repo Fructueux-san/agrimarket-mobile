@@ -72,7 +72,7 @@ class ExploreView extends GetView<ExploreController> {
                 },
                 child: ListView.builder(
                     scrollDirection: Axis.vertical,
-                    itemCount: _exploreController.categoriesWithProducts.length,
+                    itemCount: _exploreController.catsWithProducts.length,
                     itemBuilder: (context, index_cats) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,7 +90,7 @@ class ExploreView extends GetView<ExploreController> {
                                   textAlign: TextAlign.start,
                                   text: TextSpan(
                                     text:
-                                        "${_exploreController.categoriesWithProducts[index_cats]['name']} ",
+                                        "${_exploreController.catsWithProducts[index_cats].name} ",
                                     children: [
                                       TextSpan(
                                           text: "(-20%)",
@@ -107,7 +107,7 @@ class ExploreView extends GetView<ExploreController> {
                                 Text(
                                   style: TextStyle(),
                                   textAlign: TextAlign.start,
-                                  "${_exploreController.categoriesWithProducts[index_cats]['description']}",
+                                  "${_exploreController.catsWithProducts[index_cats].description}",
                                 )
                               ],
                             ),
@@ -121,7 +121,7 @@ class ExploreView extends GetView<ExploreController> {
                                 itemBuilder: (context, index) {
                                   var productImage = Image.network(
                                     fit: BoxFit.cover,
-                                    "$server_scheme://$host/api/product/media/${_exploreController.categoriesWithProducts[index_cats]['products'][index]['_id']}",
+                                    "$server_scheme://$host/api/product/media/${_exploreController.catsWithProducts[index_cats].products[index].sId}",
                                     width: context.width * 0.35,
                                     height: context.height * 0.25,
                                   );
@@ -140,9 +140,9 @@ class ExploreView extends GetView<ExploreController> {
                                                     arguments: {
                                                       "productInfo":
                                                           _exploreController
-                                                                      .categoriesWithProducts[
-                                                                  index_cats][
-                                                              'products'][index],
+                                                              .catsWithProducts[
+                                                                  index_cats]
+                                                              .products[index],
                                                       "productImage":
                                                           productImage
                                                     });
@@ -198,7 +198,7 @@ class ExploreView extends GetView<ExploreController> {
                                               }),
                                         ),
                                         Text(
-                                          "${_exploreController.categoriesWithProducts[index_cats]['products'][index]["name"]}",
+                                          "${_exploreController.catsWithProducts[index_cats].products[index].name}",
                                           maxLines: 1,
                                           style: TextStyle(
                                               color: Colors.black,
@@ -206,7 +206,7 @@ class ExploreView extends GetView<ExploreController> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                          "xof ${_exploreController.categoriesWithProducts[index_cats]['products'][index]['price']} par Kg",
+                                          "xof ${_exploreController.catsWithProducts[index_cats].products[index].price} par Kg",
                                           maxLines: 1,
                                           style: TextStyle(
                                               color: Colors.black,
@@ -221,8 +221,8 @@ class ExploreView extends GetView<ExploreController> {
                                       width: 20,
                                     ),
                                 itemCount: _exploreController
-                                    .categoriesWithProducts[index_cats]
-                                        ['products']
+                                    .catsWithProducts[index_cats]
+                                    .products
                                     .length),
                           ),
                         ],

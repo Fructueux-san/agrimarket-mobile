@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mobile/app/data/CategoryModel.dart';
 import 'package:mobile/app/modules/crossroads/views/crossroads_view.dart';
 import 'package:mobile/app/modules/explore/providers/explore_provider.dart';
 import 'package:mobile/app/services/storage_service.dart';
@@ -12,6 +13,8 @@ class ExploreController extends GetxController {
   List categories = [].obs;
 
   List categoriesWithProducts = [].obs;
+
+  RxList<CategoryModel> catsWithProducts = <CategoryModel>[].obs;
   @override
   void onInit() {
     super.onInit();
@@ -38,10 +41,25 @@ class ExploreController extends GetxController {
       Get.snackbar('Erreur', "Vérifier votre connexion internet.");
     } else {
       if (res.statusCode == 200) {
-        print(res.body);
+        //print(res.body);
         categoriesWithProducts.assignAll(res.body);
+
+        // On créer le mode objet
+        final List<CategoryModel> cats = categoriesWithProducts
+            .map((json) => CategoryModel.fromJson(json))
+            .toList();
+        catsWithProducts.assignAll(cats);
       } else {
-        Get.snackbar("Error", "Impossible de récupérer le feed");
+        if (res.statusCode == 401 || res.statusCode == 403) {
+          _storage.clearPrefs();
+          Get.snackbar("Connexion", "Veuillez vous connecter");
+          Get.offAll(CrossroadsView());
+        }
+        if (res.bodyString!.contains("message") == true) {
+          Get.snackbar("Erreur", res.body['message']);
+        } else {
+          Get.snackbar("Erreur", "Une erreur s'est produite.");
+        }
       }
     }
   }
@@ -49,7 +67,7 @@ class ExploreController extends GetxController {
   Future<List> loadCategories() async {
     // On récupère la liste des catégories.
     var res = await _exploreProvider.getAllCategories();
-    print(res.bodyString);
+    //print(res.bodyString);
     if (res.statusCode == null) {
       Get.snackbar("Erreur", "Vérifiez votre connexion internet.");
     } else {

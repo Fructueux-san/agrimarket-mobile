@@ -14,6 +14,7 @@ abstract class Routes {
   static const FAVORITE = _Paths.FAVORITE;
   static const PRODUCT = _Paths.PRODUCT;
   static const ONBOARDING = _Paths.ONBOARDING;
+  static const CATEGORY_PRODUCTS = _Paths.CATEGORY_PRODUCTS;
 }
 
 abstract class _Paths {
@@ -29,4 +30,5 @@ abstract class _Paths {
   static const FAVORITE = '/favorite';
   static const PRODUCT = '/product';
   static const ONBOARDING = '/onboarding';
+  static const CATEGORY_PRODUCTS = '/category-products';
 }

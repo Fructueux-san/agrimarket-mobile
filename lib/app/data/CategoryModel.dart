@@ -1,3 +1,5 @@
+import 'package:mobile/app/data/product_model.dart';
+
 class CategoryModel {
   final String? sId;
   final String? name;
@@ -8,6 +10,8 @@ class CategoryModel {
   final String? updatedAt;
   final int? iV;
 
+  // Liste classique
+  final List<ProductModel> products;
   bool checked;
 
   CategoryModel({
@@ -19,10 +23,15 @@ class CategoryModel {
     this.createdAt,
     this.updatedAt,
     this.iV,
-    this.checked = false, // Pour le checking de la page2 du Onboarding
+    this.products = const [],
+    this.checked = false,
   });
 
   factory CategoryModel.fromJson(Map<String, dynamic> json) {
+    final productList = (json['products'] as List<dynamic>? ?? [])
+        .map((p) => ProductModel.fromJson(p as Map<String, dynamic>))
+        .toList();
+
     return CategoryModel(
       sId: json['_id'],
       name: json['name'],
@@ -32,6 +41,7 @@ class CategoryModel {
       createdAt: json['createdAt'],
       updatedAt: json['updatedAt'],
       iV: json['__v'],
+      products: productList,
     );
   }
 
@@ -43,6 +53,7 @@ class CategoryModel {
         'icon': icon,
         'createdAt': createdAt,
         'updatedAt': updatedAt,
-        '__v': iV
+        '__v': iV,
+        'products': products.map((p) => p.toJson()).toList(),
       };
 }

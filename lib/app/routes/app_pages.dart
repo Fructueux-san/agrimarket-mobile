@@ -4,6 +4,8 @@ import '../modules/account/bindings/account_binding.dart';
 import '../modules/account/views/account_view.dart';
 import '../modules/cart/bindings/cart_binding.dart';
 import '../modules/cart/views/cart_view.dart';
+import '../modules/category_products/bindings/category_products_binding.dart';
+import '../modules/category_products/views/category_products_view.dart';
 import '../modules/crossroads/bindings/crossroads_binding.dart';
 import '../modules/crossroads/views/crossroads_view.dart';
 import '../modules/explore/bindings/explore_binding.dart';
@@ -85,6 +87,11 @@ class AppPages {
       name: _Paths.ONBOARDING,
       page: () => OnboardingView(),
       binding: OnboardingBinding(),
+    ),
+    GetPage(
+      name: _Paths.CATEGORY_PRODUCTS,
+      page: () => CategoryProductsView(),
+      binding: CategoryProductsBinding(),
     ),
   ];
 }
