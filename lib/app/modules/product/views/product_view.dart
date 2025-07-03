@@ -22,6 +22,7 @@ class ProductView extends GetView<ProductController> {
   ].obs;
 
   RxInt quantity = 1.obs;
+  final _productController = ProductController();
 
   @override
   Widget build(BuildContext context) {
@@ -50,28 +51,44 @@ class ProductView extends GetView<ProductController> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 300,
-                            child: Text(
-                              maxLines: 3,
-                              "${Get.arguments['productInfo'].name}",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 30),
-                            ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        SizedBox(
+                          width: 300,
+                          child: Text(
+                            maxLines: 3,
+                            "${Get.arguments['productInfo'].name}",
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold, fontSize: 30),
                           ),
-                          Icon(Icons.favorite_outline)
-                        ],
-                      ),
+                        ),
+                        Obx(() => IconButton(
+                            onPressed: () {
+                              if (_productController.productInFavs(
+                                  Get.arguments['productInfo'].sId)) {
+                                _productController.removeFromFavorites(
+                                    Get.arguments['productInfo'].sId);
+                              } else {
+                                _productController.addToFavorites(
+                                    Get.arguments['productInfo'].sId);
+                              }
+                            },
+                            icon: _productController.productInFavs(
+                                    Get.arguments['productInfo'].sId)
+                                ? Icon(
+                                    Icons.favorite,
+                                    color: MAIN_APP_COLOR,
+                                  )
+                                : Icon(Icons.favorite_outline)))
+                      ],
                     ),
                   ),
                 ),
-                Container(
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(Get.arguments['productInfo'].description),
                 ),
                 Padding(

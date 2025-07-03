@@ -34,7 +34,8 @@ class CategoriesView extends GetView {
                         CategoryProductsController(
                             _exploreController.categories[index]['_id']),
                         permanent: false);*/
-
+                    _exploreController.selectedCategory.value
+                        .assignAll(_exploreController.categories[index]);
                     Get.toNamed("/category-products",
                         parameters: {
                           'category': _exploreController.categories[index]

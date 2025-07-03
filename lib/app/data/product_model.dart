@@ -8,6 +8,7 @@ class ProductModel {
   List<String>? categories;
   String? createdAt;
   int? iV;
+  List<String>? likesList;
 
   ProductModel(
       {this.sId,
@@ -18,7 +19,8 @@ class ProductModel {
       this.farmerId,
       this.categories,
       this.createdAt,
-      this.iV});
+      this.iV,
+      this.likesList});
 
   ProductModel.fromJson(Map<String, dynamic> json) {
     sId = json['_id'];
@@ -29,20 +31,22 @@ class ProductModel {
     farmerId = json['farmerId'];
     categories = json['categories'].cast<String>();
     createdAt = json['createdAt'];
+    likesList = json['likesList'].cast<String>();
     iV = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['_id'] = this.sId;
-    data['name'] = this.name;
-    data['price'] = this.price;
-    data['picture'] = this.picture;
-    data['description'] = this.description;
-    data['farmerId'] = this.farmerId;
-    data['categories'] = this.categories;
-    data['createdAt'] = this.createdAt;
-    data['__v'] = this.iV;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['_id'] = sId;
+    data['name'] = name;
+    data['price'] = price;
+    data['picture'] = picture;
+    data['description'] = description;
+    data['farmerId'] = farmerId;
+    data['categories'] = categories;
+    data['createdAt'] = createdAt;
+    data['likesList'] = likesList;
+    data['__v'] = iV;
     return data;
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/app/modules/explore/controllers/explore_controller.dart';
 import 'package:mobile/app/modules/product/views/product_view.dart';
 import 'package:mobile/commons/configs.dart';
 
@@ -8,6 +9,7 @@ import '../controllers/category_products_controller.dart';
 class CategoryProductsView extends GetView<CategoryProductsController> {
   CategoryProductsView({super.key});
   final _categoryProductsController = Get.find<CategoryProductsController>();
+  final _exploreController = Get.find<ExploreController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,7 +37,7 @@ class CategoryProductsView extends GetView<CategoryProductsController> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("${Get.arguments['name']}"),
+                      Text("${_exploreController.selectedCategory['name']}"),
                       _categoryProductsController.products.isEmpty
                           ? Text(
                               "Aucun produit à afficher",

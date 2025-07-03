@@ -28,4 +28,14 @@ class ExploreProvider extends GetConnect {
     });
     return res;
   }
+
+  Future<Response> getUserFavs() async {
+    var url =
+        "${conf.server_scheme}://${conf.server}:${conf.server_port}/api/user/products-favlist";
+    var res = get(url, headers: {
+      'accept': "applications/json",
+      'token': await _storage.getKeyValue('token') ?? ""
+    });
+    return res;
+  }
 }

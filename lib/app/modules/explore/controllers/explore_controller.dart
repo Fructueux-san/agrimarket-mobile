@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:mobile/app/data/CategoryModel.dart';
+import 'package:mobile/app/data/product_model.dart';
 import 'package:mobile/app/modules/crossroads/views/crossroads_view.dart';
 import 'package:mobile/app/modules/explore/providers/explore_provider.dart';
 import 'package:mobile/app/services/storage_service.dart';
@@ -13,8 +14,11 @@ class ExploreController extends GetxController {
   List categories = [].obs;
 
   List categoriesWithProducts = [].obs;
+  RxMap selectedCategory = {}.obs;
 
   RxList<CategoryModel> catsWithProducts = <CategoryModel>[].obs;
+  RxList<ProductModel> userFavorites = <ProductModel>[].obs;
+
   @override
   void onInit() {
     super.onInit();
@@ -86,5 +90,20 @@ class ExploreController extends GetxController {
       }
     }
     return categories;
+  }
+
+  void getUserFavoriteProducts() async {
+    // On send la requête
+    var res = await _exploreProvider.getUserFavs();
+    if (res.statusCode == 200) {
+      List favsProducts = [];
+      favsProducts.assignAll(res.body);
+      userFavorites.assignAll(
+          favsProducts.map((json) => ProductModel.fromJson(json)).toList());
+    } else {
+      if (res.bodyString!.contains("message") == true) {
+        Get.snackbar("Erreur", "Impossible de récupérer les favories");
+      }
+    }
   }
 }
