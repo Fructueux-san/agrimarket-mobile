@@ -24,11 +24,11 @@ class ExploreController extends GetxController {
     super.onInit();
     loadCategories();
     loadDataForHomePage();
+    getUserFavoriteProducts();
   }
 
   @override
   void onReady() {
-    loadCategories();
     super.onReady();
   }
 
@@ -100,6 +100,8 @@ class ExploreController extends GetxController {
       favsProducts.assignAll(res.body);
       userFavorites.assignAll(
           favsProducts.map((json) => ProductModel.fromJson(json)).toList());
+      // print("USER FAVORITES");
+      // print(userFavorites);
     } else {
       if (res.bodyString!.contains("message") == true) {
         Get.snackbar("Erreur", "Impossible de récupérer les favories");

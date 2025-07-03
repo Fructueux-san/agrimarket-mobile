@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
+import 'package:mobile/app/data/CategoryModel.dart';
+import 'package:mobile/app/data/product_model.dart';
 import 'package:mobile/app/modules/explore/views/categories_view.dart';
+import 'package:mobile/app/modules/product/controllers/product_controller.dart';
 import 'package:mobile/app/modules/product/views/product_view.dart';
 import 'package:mobile/commons/configs.dart';
 
@@ -11,8 +14,8 @@ import '../controllers/explore_controller.dart';
 
 class ExploreView extends GetView<ExploreController> {
   ExploreView({super.key});
-  final ExploreController _exploreController = Get.find();
-
+  final ExploreController _exploreController = Get.find<ExploreController>();
+  final _productController = ProductController();
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -74,6 +77,8 @@ class ExploreView extends GetView<ExploreController> {
                     scrollDirection: Axis.vertical,
                     itemCount: _exploreController.catsWithProducts.length,
                     itemBuilder: (context, index_cats) {
+                      CategoryModel category =
+                          _exploreController.catsWithProducts[index_cats];
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -89,8 +94,7 @@ class ExploreView extends GetView<ExploreController> {
                                 RichText(
                                   textAlign: TextAlign.start,
                                   text: TextSpan(
-                                    text:
-                                        "${_exploreController.catsWithProducts[index_cats].name} ",
+                                    text: "${category.name} ",
                                     children: [
                                       TextSpan(
                                           text: "(-20%)",
@@ -107,7 +111,7 @@ class ExploreView extends GetView<ExploreController> {
                                 Text(
                                   style: TextStyle(),
                                   textAlign: TextAlign.start,
-                                  "${_exploreController.catsWithProducts[index_cats].description}",
+                                  "${category.description}",
                                 )
                               ],
                             ),
@@ -119,9 +123,11 @@ class ExploreView extends GetView<ExploreController> {
                                 padding: EdgeInsets.symmetric(
                                     horizontal: 20, vertical: 8),
                                 itemBuilder: (context, index) {
+                                  ProductModel product =
+                                      category.products[index];
                                   var productImage = Image.network(
                                     fit: BoxFit.cover,
-                                    "$server_scheme://$host/api/product/media/${_exploreController.catsWithProducts[index_cats].products[index].sId}",
+                                    "$server_scheme://$host/api/product/media/${product.sId}",
                                     width: context.width * 0.35,
                                     height: context.height * 0.25,
                                   );
@@ -138,11 +144,7 @@ class ExploreView extends GetView<ExploreController> {
                                               onTap: () {
                                                 Get.to(ProductView(),
                                                     arguments: {
-                                                      "productInfo":
-                                                          _exploreController
-                                                              .catsWithProducts[
-                                                                  index_cats]
-                                                              .products[index],
+                                                      "productInfo": product,
                                                       "productImage":
                                                           productImage
                                                     });
@@ -153,26 +155,44 @@ class ExploreView extends GetView<ExploreController> {
                                                 child: productImage,
                                               ),
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: InkWell(
-                                                onTap: () {},
-                                                child: Container(
-                                                    width: 35,
-                                                    height: 35,
-                                                    alignment: Alignment.center,
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white,
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(20)),
-                                                    child: Icon(
-                                                      Icons.favorite_border,
-                                                      color: Colors.red,
-                                                    )),
-                                              ),
-                                            )
+                                            Obx(() => Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: InkWell(
+                                                    onTap: () async {
+                                                      if (_productController.productInFavs(product.sId)) {
+                                                        await _productController.removeFromFavorites(product.sId!);
+                                                      }else {
+                                                        await _productController.addToFavorites(product.sId!);
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                        width: 35,
+                                                        height: 35,
+                                                        alignment:
+                                                            Alignment.center,
+                                                        decoration: BoxDecoration(
+                                                            color: Colors.white,
+                                                            borderRadius:
+                                                                BorderRadius
+                                                                    .circular(
+                                                                        20)),
+                                                        child: _productController
+                                                                .productInFavs(
+                                                                    product.sId)
+                                                            ? Icon(
+                                                                Icons.favorite,
+                                                                color:
+                                                                    MAIN_APP_COLOR,
+                                                              )
+                                                            : Icon(
+                                                                Icons
+                                                                    .favorite_border,
+                                                                color:
+                                                                    Colors.red,
+                                                              )),
+                                                  ),
+                                                ))
                                           ],
                                         ),
                                         SizedBox(
@@ -198,7 +218,7 @@ class ExploreView extends GetView<ExploreController> {
                                               }),
                                         ),
                                         Text(
-                                          "${_exploreController.catsWithProducts[index_cats].products[index].name}",
+                                          "${product.name}",
                                           maxLines: 1,
                                           style: TextStyle(
                                               color: Colors.black,
@@ -206,7 +226,7 @@ class ExploreView extends GetView<ExploreController> {
                                               fontWeight: FontWeight.bold),
                                         ),
                                         Text(
-                                          "xof ${_exploreController.catsWithProducts[index_cats].products[index].price} par Kg",
+                                          "xof ${product.price} par Kg",
                                           maxLines: 1,
                                           style: TextStyle(
                                               color: Colors.black,
@@ -220,10 +240,7 @@ class ExploreView extends GetView<ExploreController> {
                                 separatorBuilder: (context, index) => SizedBox(
                                       width: 20,
                                     ),
-                                itemCount: _exploreController
-                                    .catsWithProducts[index_cats]
-                                    .products
-                                    .length),
+                                itemCount: category.products.length),
                           ),
                         ],
                       );

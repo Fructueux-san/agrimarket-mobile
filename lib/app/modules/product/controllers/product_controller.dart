@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:mobile/app/data/product_model.dart';
 import 'package:mobile/app/modules/explore/controllers/explore_controller.dart';
 import 'package:mobile/app/modules/product/providers/product_provider.dart';
 
@@ -29,6 +30,8 @@ class ProductController extends GetxController {
     var resp = await _provider.addToFavorites(productId);
     if (resp.statusCode == 200) {
       _exploreController.getUserFavoriteProducts();
+
+      Get.snackbar("Okay", "Ajouté dans vos favoris avec succès !");
       return true;
     } else {
       return false;
@@ -39,6 +42,8 @@ class ProductController extends GetxController {
     var resp = await _provider.removeFromFavorites(productId);
     if (resp.statusCode == 200) {
       _exploreController.getUserFavoriteProducts();
+      Get.snackbar("Okay", "Le produit a bien été retiré de vos favoris");
+
       return true;
     } else {
       return false;
@@ -46,6 +51,7 @@ class ProductController extends GetxController {
   }
 
   bool productInFavs(productid) {
-    return _exploreController.userFavorites.any((p) => p.sId == productid);
+    return _exploreController.userFavorites
+        .any((ProductModel p) => p.sId == productid);
   }
 }
