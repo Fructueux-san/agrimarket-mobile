@@ -31,12 +31,15 @@ class CartController extends GetxController {
 
   void increment() => count.value++;
 
-  void addToCart(Map element) async {
+  Future<bool> addToCart(Map element) async {
     var res = await _provider.addProductToCart(element);
     if (res.statusCode == 200) {
       Get.snackbar("Agrimarket +", res.body['message']);
+      await getUserCartElements();
+      return true;
     } else {
       Get.snackbar("Agrimarket + error", "Impossible d'ajouter au panier");
+      return false;
     }
   }
 
@@ -54,8 +57,10 @@ class CartController extends GetxController {
     if (res.statusCode == 200) {
       print('CART ELEMENTS');
       print(res.body);
+      List l = [];
       if (res.body != null) {
-        cartElements.assignAll(res.body);
+        l.assignAll(res.body);
+        cartElements.assignAll(l);
       }
     } else {
       print(res.body);
@@ -63,5 +68,14 @@ class CartController extends GetxController {
       Get.snackbar("Agrimarket + error",
           "Impossible de récupérer les éléments du panier");
     }
+  }
+
+  bool inCart(String productId) {
+    for (var c in cartElements.value) {
+      if (c['product'] == productId) {
+        return true;
+      }
+    }
+    return false;
   }
 }

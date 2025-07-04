@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/app/modules/cart/controllers/cart_controller.dart';
+import 'package:mobile/app/modules/cart/views/cart_view.dart';
 import 'package:mobile/commons/configs.dart';
 import 'package:mobile/commons/ui_element.dart';
 
@@ -23,6 +25,7 @@ class ProductView extends GetView<ProductController> {
 
   RxInt quantity = 1.obs;
   final _productController = ProductController();
+  final _cartController = Get.find<CartController>();
 
   @override
   Widget build(BuildContext context) {
@@ -175,19 +178,6 @@ class ProductView extends GetView<ProductController> {
                 SizedBox(
                   height: 20,
                 ),
-                /*ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10.0)),
-                      backgroundColor: Color.fromRGBO(83, 177, 117, 1),
-                      padding: EdgeInsets.only(
-                          left: 30, right: 30, top: 15, bottom: 15)),
-                  child: Text(
-                    "Ajouter au panier",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                )*/
               ],
             ),
           )
@@ -206,16 +196,34 @@ class ProductView extends GetView<ProductController> {
                       fontSize: 20,
                       fontWeight: FontWeight.w600),
                 )),
-            CustomButton(
-              title: "Panier",
-              onPressed: () {},
-              icon: Icon(
-                Icons.add_shopping_cart,
-                weight: 20,
-                color: Colors.white,
-                size: 30,
-              ),
-            )
+            Obx(() => CustomButton(
+                  title:
+                      _cartController.inCart(Get.arguments['productInfo'].sId)
+                          ? "Voir le panier"
+                          : "Panier",
+                  onPressed: () async {
+                    if (_cartController
+                            .inCart(Get.arguments['productInfo'].sId) &&
+                        _cartController.cartElements.isNotEmpty) {
+                      Get.to(() => CartView());
+                    } else {
+                      await _cartController.addToCart({
+                        'productId': Get.arguments['productInfo'].sId,
+                        'quantity': quantity.value,
+                        'price':
+                            Get.arguments['productInfo'].price * quantity.value
+                      });
+                    }
+                  },
+                  icon: _cartController.inCart(Get.arguments['productInfo'].sId)
+                      ? null
+                      : Icon(
+                          Icons.add_shopping_cart,
+                          weight: 20,
+                          color: Colors.white,
+                          size: 30,
+                        ),
+                ))
           ],
         )),
       ),

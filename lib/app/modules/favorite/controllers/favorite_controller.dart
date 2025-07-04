@@ -26,8 +26,6 @@ class FavoriteController extends GetxController {
 
   Future<Map<String, dynamic>> getFarmerInformation(String farmerId) async {
     final res = await _provider.farmerInfo(farmerId);
-    print("farmers");
-    print(res.bodyString);
     if (res.statusCode == 200) {
       return Map<String, dynamic>.from(res.body);
     } else {
