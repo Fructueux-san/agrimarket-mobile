@@ -196,6 +196,26 @@ class FavoriteView extends GetView<FavoriteController> {
                         "Vous les avez apprécier. Soyez coll en partageant à vos amis",
                         style: TextStyle(color: Colors.grey),
                       ),
+                    ),
+                    Container(
+                      height: 300,
+                      child: ListView.builder(
+                        itemCount:
+                            _favController.userFavsFarmersInformations.length,
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return ChoiceChip(
+                            label: Text(
+                                "${_favController.farmersList[index]['fullname']}"),
+                            selected: false,
+                            onSelected: (newState) {
+                              print(newState);
+                            },
+                          );
+                        },
+                      ),
                     )
                   ],
                 ),

@@ -10,6 +10,7 @@ class FavoriteController extends GetxController {
   RxMap<String, Map<String, dynamic>> userFavsFarmersInformations =
       <String, Map<String, dynamic>>{}.obs;
 
+  RxList farmersList = [].obs;
   @override
   void onInit() {
     super.onInit();
@@ -45,6 +46,7 @@ class FavoriteController extends GetxController {
     for (var product in userFavorites) {
       final info = await getFarmerInformation(product.farmerId!);
       userFavsFarmersInformations[product.farmerId!] = info;
+      farmersList.value.add(info);
     }
   }
 
