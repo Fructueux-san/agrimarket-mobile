@@ -40,6 +40,7 @@ class HomeView extends GetView<HomeController> {
       drawer: DrawerView(),
       body: Obx(() => pages[bottomnavController.selectedIndex.value]),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
+              elevation: 30,
               iconSize: 30,
               fixedColor: Colors.black,
               backgroundColor: Colors.black,

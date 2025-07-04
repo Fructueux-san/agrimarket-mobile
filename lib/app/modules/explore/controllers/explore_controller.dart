@@ -18,18 +18,20 @@ class ExploreController extends GetxController {
 
   RxList<CategoryModel> catsWithProducts = <CategoryModel>[].obs;
   RxList<ProductModel> userFavorites = <ProductModel>[].obs;
+  //FavoriteController _favoriteController = FavoriteController();
 
   @override
   void onInit() {
     super.onInit();
+    getUserFavoriteProducts();
     loadCategories();
     loadDataForHomePage();
-    getUserFavoriteProducts();
   }
 
   @override
   void onReady() {
     super.onReady();
+    //_favoriteController.userFavsFarmersInformations();
   }
 
   @override
@@ -100,8 +102,8 @@ class ExploreController extends GetxController {
       favsProducts.assignAll(res.body);
       userFavorites.assignAll(
           favsProducts.map((json) => ProductModel.fromJson(json)).toList());
-      // print("USER FAVORITES");
-      // print(userFavorites);
+      //print("USER FAVORITES");
+      //print(userFavorites);
     } else {
       if (res.bodyString!.contains("message") == true) {
         Get.snackbar("Erreur", "Impossible de récupérer les favories");
