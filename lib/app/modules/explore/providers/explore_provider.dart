@@ -38,4 +38,14 @@ class ExploreProvider extends GetConnect {
     });
     return res;
   }
+
+  Future<Response> allPaginatedProduct(int limit, int skip) async {
+    var url =
+        "${conf.server_scheme}://${conf.server}:${conf.server_port}/api/product/list?limit=$limit&skip=$skip";
+    var res = get(url, headers: {
+      'accept': "applications/json",
+      'token': await _storage.getKeyValue('token') ?? ""
+    });
+    return res;
+  }
 }

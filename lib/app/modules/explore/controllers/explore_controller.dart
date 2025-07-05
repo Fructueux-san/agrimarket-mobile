@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:mobile/app/data/CategoryModel.dart';
 import 'package:mobile/app/data/product_model.dart';
@@ -15,10 +16,16 @@ class ExploreController extends GetxController {
 
   List categoriesWithProducts = [].obs;
   RxMap selectedCategory = {}.obs;
+  RxInt totalProductsCount = 0.obs;
+  RxBool allProductsIsLoading = false.obs;
 
   RxList<CategoryModel> catsWithProducts = <CategoryModel>[].obs;
   RxList<ProductModel> userFavorites = <ProductModel>[].obs;
   //FavoriteController _favoriteController = FavoriteController();
+
+  RxList<ProductModel> allProducts = <ProductModel>[].obs;
+  RxInt limit = 10.obs;
+  final ScrollController allProductScrollController = ScrollController();
 
   @override
   void onInit() {
@@ -26,6 +33,10 @@ class ExploreController extends GetxController {
     getUserFavoriteProducts();
     loadCategories();
     loadDataForHomePage();
+    getAllProducts();
+    allProductScrollController.addListener(() {
+      loadMoreDataForAllProductPage();
+    });
   }
 
   @override
@@ -108,6 +119,37 @@ class ExploreController extends GetxController {
       if (res.bodyString!.contains("message") == true) {
         Get.snackbar("Erreur", "Impossible de récupérer les favories");
       }
+    }
+  }
+
+  void getAllProducts() async {
+    allProductsIsLoading.value = true;
+    try {
+      await Future.delayed(Duration(seconds: 3));
+      var res = await _exploreProvider.allPaginatedProduct(
+          limit.value, allProducts.length);
+      if (res.statusCode == 200) {
+        List l = [];
+        l.assignAll(res.body['products']);
+        totalProductsCount.value = res.body['totalItems'];
+        //print(res.body['products']);
+        allProducts.addAll(l.map((e) => ProductModel.fromJson(e)).toList());
+      } else {
+        Get.snackbar('Error', "Impossible de récupérer la liste des produits");
+      }
+    } catch (e) {
+      Get.snackbar("Erreur", "Erreur de connexion serveur.");
+    } finally {
+      allProductsIsLoading.value = false;
+    }
+  }
+
+  void loadMoreDataForAllProductPage() {
+    if (!allProductsIsLoading.value &&
+        allProductScrollController.position.pixels >=
+            allProductScrollController.position.maxScrollExtent - 100 &&
+        totalProductsCount.value > allProducts.length) {
+      getAllProducts();
     }
   }
 }
