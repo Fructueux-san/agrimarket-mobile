@@ -39,6 +39,7 @@ class CartController extends GetxController {
       return true;
     } else {
       Get.snackbar("Agrimarket + error", "Impossible d'ajouter au panier");
+      await getUserCartElements();
       return false;
     }
   }
@@ -50,6 +51,7 @@ class CartController extends GetxController {
     } else {
       Get.snackbar("Agrimarket + error", "Impossible d'ajouter au panier");
     }
+    await getUserCartElements();
   }
 
   Future<void> getUserCartElements() async {
@@ -67,6 +69,16 @@ class CartController extends GetxController {
       print(res.statusCode);
       Get.snackbar("Agrimarket + error",
           "Impossible de récupérer les éléments du panier");
+    }
+  }
+
+  void updateCartElement(Map data) async {
+    var res = await _provider.updateCartData(data);
+    if (res.statusCode == 200) {
+      await getUserCartElements();
+    } else {
+      Get.snackbar("Erreur", "Impossible de mettre à jour le panier.");
+      await getUserCartElements();
     }
   }
 

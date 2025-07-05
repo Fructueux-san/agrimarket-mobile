@@ -58,4 +58,15 @@ class CartProvider extends GetConnect {
     });
     return res;
   }
+
+  Future<Response> updateCartData(Map data) async {
+    var url =
+        "${conf.server_scheme}://${conf.server}:${conf.server_port}/api/cart/update-cart-element";
+    var res = patch(url, data, headers: {
+      "Content-Type": "application/json",
+      "accept": "application/json",
+      'token': _storage.getToken() ?? ""
+    });
+    return res;
+  }
 }
