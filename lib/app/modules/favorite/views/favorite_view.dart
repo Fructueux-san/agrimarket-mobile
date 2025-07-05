@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:liquid_pull_to_refresh/liquid_pull_to_refresh.dart';
 import 'package:mobile/app/data/product_model.dart';
+import 'package:mobile/app/modules/cart/controllers/cart_controller.dart';
 import 'package:mobile/app/modules/explore/controllers/explore_controller.dart';
 import 'package:mobile/app/modules/product/controllers/product_controller.dart';
 import 'package:mobile/commons/configs.dart';
@@ -13,6 +14,7 @@ class FavoriteView extends GetView<FavoriteController> {
   final _exploreController = Get.find<ExploreController>();
   final _favController = Get.find<FavoriteController>();
   final _productController = ProductController();
+  final _cartController = Get.find<CartController>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,9 +151,15 @@ class FavoriteView extends GetView<FavoriteController> {
                                             style: IconButton.styleFrom(
                                                 backgroundColor: Color.fromRGBO(
                                                     83, 177, 117, 1)),
-                                            onPressed: () {},
+                                            onPressed: () {
+                                              _cartController.addToCart({
+                                                "productId": product.sId,
+                                                "quantity": 1,
+                                                "price": product.price ?? 0 * 1
+                                              });
+                                            },
                                             icon: Icon(
-                                              Icons.add,
+                                              Icons.add_shopping_cart_outlined,
                                               color: Colors.white,
                                               size: 30,
                                             )),

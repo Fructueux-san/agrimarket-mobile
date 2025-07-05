@@ -62,10 +62,10 @@ class DrawerView extends GetView {
             title: Text("Mon compte"),
             onTap: () => {Get.to(AccountView())},
           ),
-          ListTile(
+          /*ListTile(
             leading: Icon(Icons.category),
             title: Text("Catégories"),
-          ),
+          ),*/
           ListTile(
             leading: Icon(Icons.settings_outlined),
             title: Text("Paramètres"),

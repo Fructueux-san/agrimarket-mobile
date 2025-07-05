@@ -136,12 +136,18 @@ class AllProductView extends GetView {
                   Obx(() => (index ==
                               _exploreController.allProducts.length - 1 &&
                           _exploreController.allProductsIsLoading.value == true)
-                      ? const Padding(
-                          padding: EdgeInsets.all(10),
-                          child: SpinKitCircle(
-                            color: MAIN_APP_COLOR,
-                            //size: 40,
-                          ),
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.all(10),
+                              child: SpinKitCircle(
+                                color: MAIN_APP_COLOR,
+                                //size: 40,
+                              ),
+                            ),
+                          ],
                         )
                       : SizedBox.shrink())
                 ],
