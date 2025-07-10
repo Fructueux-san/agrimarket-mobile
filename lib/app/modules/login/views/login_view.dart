@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:mobile/app/modules/producer_register/views/producer_register_view.dart';
 import 'package:mobile/app/modules/register_client/views/register_client_view.dart';
 
 import '../controllers/login_controller.dart';
@@ -39,7 +40,7 @@ class LoginView extends GetView<LoginController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Cher client,',
+                          'Cher ${Get.arguments['actor']},',
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
@@ -147,7 +148,11 @@ class LoginView extends GetView<LoginController> {
                         ),
                         TextButton(
                             onPressed: () {
-                              Get.to(() => RegisterClientView());
+                              if (Get.arguments['actor'] == 'client') {
+                                Get.to(() => RegisterClientView());
+                              } else {
+                                Get.to(() => ProducerRegisterView());
+                              }
                             },
                             child: Text("Créer mon compte"))
                       ],

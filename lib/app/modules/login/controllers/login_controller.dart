@@ -5,6 +5,8 @@ import 'package:mobile/app/modules/home/views/home_view.dart';
 import 'package:mobile/app/modules/login/providers/login_provider.dart';
 import 'package:mobile/app/modules/onboarding/controllers/onboarding_controller.dart';
 import 'package:mobile/app/modules/onboarding/views/onboarding_view.dart';
+import 'package:mobile/app/modules/producer_dashboard/controllers/producer_dashboard_controller.dart';
+import 'package:mobile/app/modules/producer_dashboard/views/producer_dashboard_view.dart';
 import 'package:mobile/app/services/storage_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -72,12 +74,17 @@ class LoginController extends GetxController {
         saveUserData(res.body);
 
         // Check if it is the first connection
-        if (res.body['firstTime'] == true) {
-          Get.put(OnboardingController());
-          Get.off(OnboardingView(), arguments: res.body);
+        if (res.body['type'] == "CLIENT") {
+          if (res.body['firstTime'] == true) {
+            Get.put(OnboardingController());
+            Get.off(OnboardingView(), arguments: res.body);
+          } else {
+            Get.put(ExploreController());
+            Get.offAll(HomeView());
+          }
         } else {
-          Get.put(ExploreController());
-          Get.offAll(HomeView());
+          Get.put(ProducerDashboardController());
+          Get.off(() => ProducerDashboardView());
         }
 
         return true;

@@ -15,6 +15,8 @@ abstract class Routes {
   static const PRODUCT = _Paths.PRODUCT;
   static const ONBOARDING = _Paths.ONBOARDING;
   static const CATEGORY_PRODUCTS = _Paths.CATEGORY_PRODUCTS;
+  static const PRODUCER_REGISTER = _Paths.PRODUCER_REGISTER;
+  static const PRODUCER_DASHBOARD = _Paths.PRODUCER_DASHBOARD;
 }
 
 abstract class _Paths {
@@ -31,4 +33,6 @@ abstract class _Paths {
   static const PRODUCT = '/product';
   static const ONBOARDING = '/onboarding';
   static const CATEGORY_PRODUCTS = '/category-products';
+  static const PRODUCER_REGISTER = '/producer-register';
+  static const PRODUCER_DASHBOARD = '/producer-dashboard';
 }

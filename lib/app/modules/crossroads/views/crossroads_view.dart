@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:mobile/app/modules/login/views/login_view.dart';
+import 'package:mobile/app/modules/producer_register/controllers/producer_register_controller.dart';
 
 import '../controllers/crossroads_controller.dart';
 
@@ -31,7 +32,8 @@ class CrossroadsView extends GetView<CrossroadsController> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Get.to(() => LoginView());
+                        Get.to(() => LoginView(),
+                            arguments: {"actor": "client"});
                       }, // Envoyer la requête de login
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
@@ -48,7 +50,11 @@ class CrossroadsView extends GetView<CrossroadsController> {
                       width: 10,
                     ),
                     ElevatedButton(
-                      onPressed: () {}, // Envoyer la requête de login
+                      onPressed: () {
+                        Get.put(ProducerRegisterController());
+                        Get.to(() => LoginView(),
+                            arguments: {"actor": "producteur"});
+                      }, // Envoyer la requête de login
                       style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10.0)),

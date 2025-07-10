@@ -18,6 +18,10 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
+import '../modules/producer_dashboard/bindings/producer_dashboard_binding.dart';
+import '../modules/producer_dashboard/views/producer_dashboard_view.dart';
+import '../modules/producer_register/bindings/producer_register_binding.dart';
+import '../modules/producer_register/views/producer_register_view.dart';
 import '../modules/product/bindings/product_binding.dart';
 import '../modules/product/views/product_view.dart';
 import '../modules/register_client/bindings/register_client_binding.dart';
@@ -92,6 +96,16 @@ class AppPages {
       name: _Paths.CATEGORY_PRODUCTS,
       page: () => CategoryProductsView(),
       binding: CategoryProductsBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRODUCER_REGISTER,
+      page: () => ProducerRegisterView(),
+      binding: ProducerRegisterBinding(),
+    ),
+    GetPage(
+      name: _Paths.PRODUCER_DASHBOARD,
+      page: () => const ProducerDashboardView(),
+      binding: ProducerDashboardBinding(),
     ),
   ];
 }
