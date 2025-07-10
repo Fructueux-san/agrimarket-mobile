@@ -1,6 +1,10 @@
 import 'package:get/get.dart';
 import 'package:mobile/app/modules/crossroads/views/crossroads_view.dart';
+import 'package:mobile/app/modules/explore/controllers/explore_controller.dart';
+import 'package:mobile/app/modules/home/controllers/home_controller.dart';
 import 'package:mobile/app/modules/home/views/home_view.dart';
+import 'package:mobile/app/modules/producer_dashboard/controllers/producer_dashboard_controller.dart';
+import 'package:mobile/app/modules/producer_dashboard/views/producer_dashboard_view.dart';
 import 'package:mobile/app/services/storage_service.dart';
 
 class SplashController extends GetxController {
@@ -29,7 +33,14 @@ class SplashController extends GetxController {
       if (token != null && exp < DateTime.now().millisecondsSinceEpoch) {
         Get.snackbar(
             "Hello ! ", "Bon retour, ${storage.getKeyValue("fullname")}");
-        Get.offAll(() => HomeView());
+        if (storage.getKeyValue("user_type") == 'CLIENT') {
+          Get.put(HomeController());
+          Get.put(ExploreController());
+          Get.offAll(() => HomeView());
+        } else {
+          Get.put(ProducerDashboardController());
+          Get.offAll(() => ProducerDashboardView());
+        }
       } else {
         Get.offAll(() => CrossroadsView());
       }

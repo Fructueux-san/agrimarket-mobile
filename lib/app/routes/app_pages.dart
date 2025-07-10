@@ -104,7 +104,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.PRODUCER_DASHBOARD,
-      page: () => const ProducerDashboardView(),
+      page: () => ProducerDashboardView(),
       binding: ProducerDashboardBinding(),
     ),
   ];

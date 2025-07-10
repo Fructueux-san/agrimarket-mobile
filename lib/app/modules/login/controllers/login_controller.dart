@@ -83,8 +83,8 @@ class LoginController extends GetxController {
             Get.offAll(HomeView());
           }
         } else {
-          Get.put(ProducerDashboardController());
-          Get.off(() => ProducerDashboardView());
+          Get.put(ProducerDashboardController(), permanent: true);
+          Get.offAll(() => ProducerDashboardView());
         }
 
         return true;

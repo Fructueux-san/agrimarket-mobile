@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 class ProducerDashboardController extends GetxController {
   //TODO: Implement ProducerDashboardController
 
-  final count = 0.obs;
+  final selectedIndex = 0.obs;
   @override
   void onInit() {
     super.onInit();
@@ -19,5 +19,7 @@ class ProducerDashboardController extends GetxController {
     super.onClose();
   }
 
-  void increment() => count.value++;
+  void changeIndex(int newIndex) {
+    selectedIndex.value = newIndex;
+  }
 }
