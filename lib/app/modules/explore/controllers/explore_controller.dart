@@ -30,13 +30,21 @@ class ExploreController extends GetxController {
   @override
   void onInit() {
     super.onInit();
-    getUserFavoriteProducts();
+    /*getUserFavoriteProducts();
     loadCategories();
     loadDataForHomePage();
-    getAllProducts();
+    getAllProducts();*/
+    loadData();
     allProductScrollController.addListener(() {
       loadMoreDataForAllProductPage();
     });
+  }
+
+  Future loadData() async {
+    await loadDataForHomePage();
+    await loadCategories();
+    await getUserFavoriteProducts();
+    await getAllProducts();
   }
 
   @override
@@ -52,7 +60,7 @@ class ExploreController extends GetxController {
 
   void increment() => count.value++;
 
-  Future loadDataForHomePage() async {
+  Future<void> loadDataForHomePage() async {
     var res = await _exploreProvider.explorationDataFetching(elementPerCats: 5);
     if (res.statusCode == null) {
       Get.snackbar('Erreur', "Vérifier votre connexion internet.");
@@ -105,7 +113,7 @@ class ExploreController extends GetxController {
     return categories;
   }
 
-  void getUserFavoriteProducts() async {
+  Future<void> getUserFavoriteProducts() async {
     // On send la requête
     var res = await _exploreProvider.getUserFavs();
     if (res.statusCode == 200) {
@@ -122,7 +130,7 @@ class ExploreController extends GetxController {
     }
   }
 
-  void getAllProducts() async {
+  Future<void> getAllProducts() async {
     allProductsIsLoading.value = true;
     try {
       await Future.delayed(Duration(seconds: 3));
@@ -144,7 +152,7 @@ class ExploreController extends GetxController {
     }
   }
 
-  void loadMoreDataForAllProductPage() {
+  Future<void> loadMoreDataForAllProductPage() async {
     if (!allProductsIsLoading.value &&
         allProductScrollController.position.pixels >=
             allProductScrollController.position.maxScrollExtent - 100 &&

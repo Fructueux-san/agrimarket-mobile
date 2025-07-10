@@ -45,7 +45,7 @@ class AllProductView extends GetView {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  Get.to(ProductView(), arguments: {
+                                  Get.to(() => ProductView(), arguments: {
                                     "productInfo": product,
                                     "productImage": productImage
                                   });

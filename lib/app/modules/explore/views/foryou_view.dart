@@ -24,9 +24,9 @@ class ForyouView extends GetView {
           child: ListView.builder(
               scrollDirection: Axis.vertical,
               itemCount: _exploreController.catsWithProducts.length,
-              itemBuilder: (context, index_cats) {
+              itemBuilder: (context, indexCats) {
                 CategoryModel category =
-                    _exploreController.catsWithProducts[index_cats];
+                    _exploreController.catsWithProducts[indexCats];
                 return Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -87,10 +87,11 @@ class ForyouView extends GetView {
                                     children: [
                                       InkWell(
                                         onTap: () {
-                                          Get.to(ProductView(), arguments: {
-                                            "productInfo": product,
-                                            "productImage": productImage
-                                          });
+                                          Get.to(() => ProductView(),
+                                              arguments: {
+                                                "productInfo": product,
+                                                "productImage": productImage
+                                              });
                                         },
                                         child: ClipRRect(
                                           borderRadius:
